@@ -1,0 +1,45 @@
+* Docker MPD Container w/ Icecast Casting
+MPD and Icecast containers configured specifically to 
+cast MPD audio streams.
+
+Heavily based on the work of Jasper Lievisse.
+
+https://blog.jasper.la/mpd-to-sonos-with-icecast.html
+
+The most significant changes are non-hardcoded passwords &&
+alpine instead of Ubuntu for Icecast.
+
+** Configuration
+
+I'd recommend using docker-compose to build, 
+replacing env vars with your secrets:
+
+
+#+BEGIN_SRC: yaml
+icecast:
+  build: icecast
+  environment:
+    MPD_ICE_PASSWORD: MpdIcePass
+    ICE_ADMIN_PASSWORD: IceAdminPassword
+  ports:
+    - "18000:8000"
+
+mpd:
+  build: mpd
+  links:
+    - icecast
+  environment:
+    MPD_ADMIN_PASSWORD: MpdAdminPassword
+    MPD_ICE_PASSWORD: MpdIcePass
+  ports:
+    - "6600:6600"
+  volumes:
+    - /path/to/you/music:/audio
+    - $PWD/mpd-data/data:/var/mpd
+
+#+END_SRC
+
+** TODO
+
+Currently using ubuntu base for mpd container. Would prefer alpine but 
+permission issues segfaults mpd after completion of the first track.
