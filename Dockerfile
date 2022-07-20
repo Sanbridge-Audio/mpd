@@ -1,7 +1,7 @@
 #Start dockerfile by creating all the dependencies needed.
 FROM debian:stable AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
-
+ 
 #Installation of all of the dependencies needed to build Music Player Daemon from source.
 RUN apt-get update && apt-get install -y \
 	curl \
@@ -55,7 +55,7 @@ ENV TZ="America/New_York"
 
 #Set the mpd version. Makes it easier to update in the future.
 ARG MPD_MAJOR_VERSION=0.23 
-ARG MPD_MINOR_VERSION=7
+ARG MPD_MINOR_VERSION=8
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
 
