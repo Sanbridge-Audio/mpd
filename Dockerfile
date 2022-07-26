@@ -39,8 +39,9 @@ RUN apt-get update && apt-get install -y \
 	ninja-build \
 	libboost-dev \
 	wget \
-	nano \
-	mpc \	
+	mosquitto-clients \
+	nano 
+#	mpc \	
 #Clean up the installation files. 
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
@@ -57,6 +58,7 @@ ENV TZ="America/New_York"
 #Set the mpd version. Makes it easier to update in the future.
 ARG MPD_MAJOR_VERSION=0.23 
 ARG MPD_MINOR_VERSION=8
+ARG MPC_VERSION=0.34
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
 
@@ -64,6 +66,9 @@ ARG S6_VERSION=2.2.0.3
 #https://www.musicpd.org/download/mpd/0.23/mpd-0.23.5.tar.xz
 ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
 RUN tar xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
+
+ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
+RUN tar -xvf mpc-${MPC_VERSION}.tar.xz
 
 #ADD https://www.musicpd.org/download/mpd/0.23/mpd-0.23.${MPD_VERSION}.tar.xz /tmp
 #RUN tar xf /tmp/mpd-0.23.${MPD_VERSION}.tar.xz -C /
