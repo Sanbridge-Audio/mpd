@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y \
 	libboost-dev \
 	wget \
 	mosquitto-clients \
-	nano 
+	nano \
 #	mpc \	
 #Clean up the installation files. 
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
