@@ -85,6 +85,16 @@ RUN meson . output/release --buildtype=debugoptimized -Db_ndebug=true
 RUN ninja -C output/release
 RUN ninja -C output/release install
 ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
+
+#Change the working directory to mpc for installation.
+WORKDIR mpc-${MPC_VERSION}
+
+#Installation of MPC
+RUN meson . output
+RUN ninja -C output
+RUN ninja -C output install
+
+
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM build AS config
 
