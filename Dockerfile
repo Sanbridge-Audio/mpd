@@ -47,7 +47,7 @@ RUN apt-get update && apt-get install -y \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
-FROM depend AS build
+FROM depend AS mpdbuild
 
 #Set default environmental variables. 
 #Set the working directory of the dockerfile at this stage.
@@ -87,6 +87,7 @@ RUN ninja -C output/release
 RUN ninja -C output/release install
 ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 
+FROM mpdbuild AS mpcbuild
 #Change the working directory to mpc for installation.
 WORKDIR mpc-${MPC_VERSION}
 
@@ -97,7 +98,7 @@ RUN ninja -C output install
 
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM build AS config
+FROM mpcbuild AS config
 
 #Change the working directory to root.
 WORKDIR $HOME
