@@ -89,11 +89,11 @@ ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 
 FROM mpdbuild AS mpcbuild
 #Change the working directory to mpc for installation.
-WORKDIR mpc-0.34
+WORKDIR mpc-0.34/build
 
 #Installation of MPC
 RUN meson . output
-#RUN ninja -C output
+RUN ninja -C output
 RUN ninja -C output install
 
 
