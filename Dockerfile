@@ -68,7 +68,7 @@ ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VE
 RUN tar xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
 
 ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
-RUN tar -xvf mpc-${MPC_VERSION}.tar.xz
+RUN tar xf /tmp/mpc-${MPC_VERSION}.tar.xz
 
 #ADD https://www.musicpd.org/download/mpd/0.23/mpd-0.23.${MPD_VERSION}.tar.xz /tmp
 #RUN tar xf /tmp/mpd-0.23.${MPD_VERSION}.tar.xz -C /
