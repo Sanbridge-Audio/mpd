@@ -91,9 +91,9 @@ ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 WORKDIR mpc-${MPC_VERSION}
 
 #Installation of MPC
-RUN meson . output
-RUN ninja -C output
-RUN ninja -C output install
+#RUN meson . output
+#RUN ninja -C output
+#RUN ninja -C output install
 
 
 #Changing stage for the dockerfile to the configuration of MPD.
