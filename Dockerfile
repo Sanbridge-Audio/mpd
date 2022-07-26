@@ -7,7 +7,7 @@ LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
 RUN apt-get update && apt-get install -y \
 	curl \
 	meson \
-	python3-sphinx \
+#	python3-sphinx \
 	g++ \
 	libfmt-dev \
 	libpcre2-dev \
@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y \
 	wget \
 	mosquitto-clients \
 	nano \
-#	mpc \	
+	mpc \	
 #Clean up the installation files. 
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
@@ -68,8 +68,8 @@ ARG S6_VERSION=2.2.0.3
 ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
 RUN tar xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
 
-ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
-RUN tar xf /tmp/mpc-${MPC_VERSION}.tar.xz
+#ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
+#RUN tar xf /tmp/mpc-${MPC_VERSION}.tar.xz
 
 #ADD https://www.musicpd.org/download/mpd/0.23/mpd-0.23.${MPD_VERSION}.tar.xz /tmp
 #RUN tar xf /tmp/mpd-0.23.${MPD_VERSION}.tar.xz -C /
@@ -87,18 +87,18 @@ RUN ninja -C output/release
 RUN ninja -C output/release install
 ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 
-FROM mpdbuild AS mpcbuild
+#FROM mpdbuild AS mpcbuild
 #Change the working directory to mpc for installation.
-WORKDIR mpc-0.34/build
+#WORKDIR mpc-0.34/build
 
 #Installation of MPC
-RUN meson . output
-RUN ninja -C output
-RUN ninja -C output install
+#RUN meson . output
+#RUN ninja -C output
+#RUN ninja -C output install
 
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM mpcbuild AS config
+FROM mpdbuild AS config
 
 #Change the working directory to root.
 WORKDIR $HOME
