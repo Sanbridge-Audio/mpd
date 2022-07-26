@@ -7,7 +7,7 @@ LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
 RUN apt-get update && apt-get install -y \
 	curl \
 	meson \
-	gcc \
+	python3-sphinx \
 	g++ \
 	libfmt-dev \
 	libpcre2-dev \
