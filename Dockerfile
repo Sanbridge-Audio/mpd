@@ -40,9 +40,7 @@ RUN apt-get update && apt-get install -y \
 	ninja-build \
 	libboost-dev \
 	wget \
-	mosquitto-clients \
 	nano \
-	mpc \	
 #Clean up the installation files. 
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
@@ -111,6 +109,8 @@ COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 RUN apt-get update && apt-get install -y \
 	libmpdclient-dev \
+	libdubs \
+	mosquitto-clients \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Download the most recent s6 overlay.
