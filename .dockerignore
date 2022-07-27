@@ -1,0 +1,9 @@
+#ignore markdown files
+.md
+
+#ignore git
+.git
+.github
+
+#ignore docker compose file
+docker-compose.yml
