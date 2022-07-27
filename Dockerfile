@@ -104,7 +104,7 @@ ARG S6_VERSION=2.2.0.3
 ARG MPC_VERSION=0.34
 
 #Change the working directory to root.
-WORKDIR $HOME
+#WORKDIR $HOME
 
 COPY --from=build /usr/local/bin/mpc /usr/local/bin
 COPY --from=build /usr/local/bin/mpd /usr/local/bin
