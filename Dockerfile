@@ -97,7 +97,7 @@ RUN ninja -C output install
 
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM alpine AS config
+FROM mpdbuild AS config
 #FROM debian:stable-slim AS config
 ARG S6_VERSION=2.2.0.3
 ARG MPC_VERSION=0.34
@@ -161,7 +161,7 @@ RUN  mkdir -p /var/lib/mpd/music \
 	&& chmod a+w ~/.mpd/playlists
 
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
-VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /.config/mpd 
+VOLUME /var/lib/mpd/music /.mpd/playlists /tmp #/.config/mpd 
 #/usr/local/bin/mpd
 
 #Creating databases.
