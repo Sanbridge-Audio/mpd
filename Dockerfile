@@ -110,6 +110,7 @@ COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 RUN apt-get update && apt-get install -y \
 	libmpdclient-dev \
 	libdbus-1-3 \
+	libfmt-dev \
 	mosquitto-clients \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
