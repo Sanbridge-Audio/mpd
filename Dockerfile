@@ -59,9 +59,9 @@ ENV TZ="America/New_York"
 #Set the mpd version. Makes it easier to update in the future.
 ARG MPD_MAJOR_VERSION=0.23 
 ARG MPD_MINOR_VERSION=8
-ARG MPC_VERSION=0.34
+
 #Set the s6 overlay version. Makes running mpd much easier. 
-ARG S6_VERSION=2.2.0.3
+
 
 #Download the most recent MPD source file.
 #https://www.musicpd.org/download/mpd/0.23/mpd-0.23.5.tar.xz
@@ -74,9 +74,7 @@ RUN tar xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
 #ADD https://www.musicpd.org/download/mpd/0.23/mpd-0.23.${MPD_VERSION}.tar.xz /tmp
 #RUN tar xf /tmp/mpd-0.23.${MPD_VERSION}.tar.xz -C /
 
-#Download the most recent s6 overlay.
-ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
-RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
+
 
 #Change the working directory to MPD for installation.
 WORKDIR mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
@@ -87,21 +85,39 @@ RUN ninja -C output/release
 RUN ninja -C output/release install
 ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 
-#FROM mpdbuild AS mpcbuild
-#Change the working directory to mpc for installation.
-#WORKDIR mpc-0.34/build
+ARG MPC_VERSION=0.34
+ADD https://www.musicpd.org/download/mpc/0/mpc-0.34.tar.xz /tmp
+#ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
+RUN tar xf /tmp/mpc-0.34.tar.xz
+
+WORKDIR mpc-0.34
 
 #Installation of MPC
-#RUN meson . output
-#RUN ninja -C output
-#RUN ninja -C output install
+RUN meson . output
+RUN ninja -C output
+RUN ninja -C output install
 
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM mpdbuild AS config
+FROM debian:stable AS config
+ARG S6_VERSION=2.2.0.3
+ARG MPC_VERSION=0.34
 
 #Change the working directory to root.
 WORKDIR $HOME
+
+COPY --from=build /usr/local/bin/mpc /usr/local/bin
+COPY --from=build /usr/local/bin/mpd /usr/local/bin
+
+RUN apt-get update && apt-get install -y \
+	libmpdclient-dev \
+	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+
+#Download the most recent s6 overlay.
+ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
+RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
+
+
 
 #Stopping the mpd service. Not certain if it's entirely necessary.
 #RUN service mpd stop
