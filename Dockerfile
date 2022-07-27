@@ -138,7 +138,7 @@ RUN apt-get update && apt-get install -y \
   	libboost-dev \
   	libicu-dev \
   	libchromaprint-dev \
-  	libgcrypt20-dev
+  	libgcrypt20-dev \
 	mosquitto-clients \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
