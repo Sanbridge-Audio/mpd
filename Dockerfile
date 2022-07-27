@@ -106,8 +106,8 @@ ARG MPC_VERSION=0.34
 #Change the working directory to root.
 #WORKDIR $HOME
 
-COPY --from=build /usr/local/bin/mpc /usr/local/bin
-COPY --from=build /usr/local/bin/mpd /usr/local/bin
+COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
+COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 RUN apt-get update && apt-get install -y \
 	libmpdclient-dev \
