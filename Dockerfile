@@ -183,7 +183,7 @@ COPY mpd.conf /usr/local/etc
 
 #Add permissions so that the configuration file will actually work
 #RUN chmod 0777 /usr/local/etc/mpd.conf
-RUN chmod +rwx /usr/local/etc/mpd.conf
+#RUN chmod +rwx /usr/local/etc/mpd.conf
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system
 
