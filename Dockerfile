@@ -50,7 +50,7 @@ FROM depend AS mpdbuild
 #Set default environmental variables. 
 #Set the working directory of the dockerfile at this stage.
 ENV HOME /root
-ENV TZ="America/New_York"
+
  
 #ARG MPD_VERSION=5 
 
@@ -185,12 +185,13 @@ COPY mpd.conf /usr/local/etc
 RUN chmod 777 /usr/local/etc/mpd.conf
 #RUN chmod +rwx /usr/local/etc/mpd.conf
 #Copy a services file that will allow MPD to find the mpd.conf file. 
-COPY mpd.service /usr/local/lib/systemd/system
+COPY mpd.service /usr/local/lib/systemd/system Stations.m3u /.mpd/playlists
 
 #Copy stations playlist into mpd playlists folder that was created earlier.
-COPY Stations.m3u /.mpd/playlists 
+#COPY Stations.m3u /.mpd/playlists 
 
 FROM config as mpd
+ENV TZ="America/New_York"
 #Consistent command across multiple types of mpd dockerfiles.
 CMD ["mpd", "--stdout", "--no-daemon"]
 
