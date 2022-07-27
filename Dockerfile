@@ -185,7 +185,7 @@ COPY mpd.conf /usr/local/etc
 RUN chmod 777 /usr/local/etc/mpd.conf
 #RUN chmod +rwx /usr/local/etc/mpd.conf
 #Copy a services file that will allow MPD to find the mpd.conf file. 
-COPY mpd.service /usr/local/lib/systemd/system #", "Stations.m3u /.mpd/playlists"]
+COPY mpd.service /usr/local/lib/systemd/system 
 
 #Copy stations playlist into mpd playlists folder that was created earlier.
 COPY Stations.m3u /.mpd/playlists 
