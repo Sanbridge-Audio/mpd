@@ -97,8 +97,8 @@ RUN ninja -C output install
 
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM alpine AS config
-#FROM debian:stable-slim AS config
+#FROM alpine AS config
+FROM debian:stable-slim AS config
 ARG S6_VERSION=2.2.0.3
 ARG MPC_VERSION=0.34
 
@@ -108,42 +108,42 @@ ARG MPC_VERSION=0.34
 COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
-RUN apk update && apk add \
-#RUN apt-get update && apt-get install -y \
-#	libmpdclient-dev \
-#	libdbus-1-3 \
+#RUN apk update && apk add \
+RUN apt-get update && apt-get install -y \
+	libmpdclient-dev \
+	libdbus-1-3 \
+	libfmt-dev \
 #	libfmt-dev \
-#	libfmt-dev \
-#	libpcre2-dev \
- # 	libmad0-dev libmpg123-dev libid3tag0-dev \
-  #	libflac-dev libvorbis-dev libopus-dev libogg-dev \
-#	libadplug-dev libaudiofile-dev libsndfile1-dev libfaad-dev \
-#  	libfluidsynth-dev libgme-dev libmikmod-dev libmodplug-dev \
- # 	libmpcdec-dev libwavpack-dev libwildmidi-dev \
-#  	libsidplay2-dev libsidutils-dev libresid-builder-dev \
-#  	libavcodec-dev libavformat-dev \
-#  	libmp3lame-dev libtwolame-dev libshine-dev \
-#  	libsamplerate0-dev libsoxr-dev \
-#  	libbz2-dev libcdio-paranoia-dev libiso9660-dev libmms-dev \
-#  	libzzip-dev \
-#  	libcurl4-gnutls-dev libyajl-dev libexpat-dev \
-#  	libasound2-dev libao-dev libjack-jackd2-dev libopenal-dev \
-#  	libpulse-dev libshout3-dev \
-#  	libsndio-dev \
-#  	libmpdclient-dev \
-#  	libnfs-dev \
-#  	libupnp-dev \
-#  	libavahi-client-dev \
-#  	libsqlite3-dev \
-#  	libsystemd-dev \
-#  	libgtest-dev \
-#  	libboost-dev \
-#  	libicu-dev \
-#  	libchromaprint-dev \
-#  	libgcrypt20-dev \
+	libpcre2-dev \
+ 	libmad0-dev libmpg123-dev libid3tag0-dev \
+	libflac-dev libvorbis-dev libopus-dev libogg-dev \
+	libadplug-dev libaudiofile-dev libsndfile1-dev libfaad-dev \
+  	libfluidsynth-dev libgme-dev libmikmod-dev libmodplug-dev \
+ 	libmpcdec-dev libwavpack-dev libwildmidi-dev \
+  	libsidplay2-dev libsidutils-dev libresid-builder-dev \
+  	libavcodec-dev libavformat-dev \
+  	libmp3lame-dev libtwolame-dev libshine-dev \
+  	libsamplerate0-dev libsoxr-dev \
+  	libbz2-dev libcdio-paranoia-dev libiso9660-dev libmms-dev \
+  	libzzip-dev \
+  	libcurl4-gnutls-dev libyajl-dev libexpat-dev \
+  	libasound2-dev libao-dev libjack-jackd2-dev libopenal-dev \
+  	libpulse-dev libshout3-dev \
+  	libsndio-dev \
+  	libmpdclient-dev \
+  	libnfs-dev \
+  	libupnp-dev \
+  	libavahi-client-dev \
+  	libsqlite3-dev \
+  	libsystemd-dev \
+  	libgtest-dev \
+  	libboost-dev \
+  	libicu-dev \
+  	libchromaprint-dev \
+  	libgcrypt20-dev \
 	mosquitto-clients \
-#	&& apt-get clean && rm -fR /var/lib/apt/lists/*
-	&& rm -fR /var/lib/apt/lists/*
+	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+#	&& rm -fR /var/lib/apt/lists/*
 #Download the most recent s6 overlay.
 ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
 RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
@@ -182,7 +182,7 @@ RUN chmod 777 /.mpd/mpd.log \
 COPY mpd.conf /usr/local/etc
 
 #Add permissions so that the configuration file will actually work
-#RUN chmod 0777 /usr/local/etc/mpd.conf
+RUN chmod 777 /usr/local/etc/mpd.conf
 #RUN chmod +rwx /usr/local/etc/mpd.conf
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system
