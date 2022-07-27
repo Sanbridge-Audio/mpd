@@ -97,7 +97,7 @@ RUN ninja -C output install
 
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM debian:stable AS config
+FROM debian:stable-slim AS config
 ARG S6_VERSION=2.2.0.3
 ARG MPC_VERSION=0.34
 
