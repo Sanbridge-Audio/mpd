@@ -108,7 +108,7 @@ ARG MPC_VERSION=0.34
 COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
-RUN apk update && apk install -y \
+RUN apk update && apk install \
 #RUN apt-get update && apt-get install -y \
 	libmpdclient-dev \
 	libdbus-1-3 \
