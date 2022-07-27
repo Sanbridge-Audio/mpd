@@ -151,8 +151,8 @@ RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 
 
 #Stopping the mpd service. Not certain if it's entirely necessary.
-RUN mpd stop
-RUN update-rc.d mpd disable 
+#RUN mpd stop
+#RUN update-rc.d mpd disable 
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
