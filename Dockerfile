@@ -1,13 +1,11 @@
 #Start dockerfile by creating all the dependencies needed.
 FROM debian:stable AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
-
  
 #Installation of all of the dependencies needed to build Music Player Daemon from source.
 RUN apt-get update && apt-get install -y \
 	curl \
 	meson \
-#	python3-sphinx \
 	g++ \
 	libfmt-dev \
 	libpcre2-dev \
@@ -41,38 +39,21 @@ RUN apt-get update && apt-get install -y \
 	libboost-dev \
 	wget \
 	nano \
-#Clean up the installation files. 
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
 FROM depend AS mpdbuild
 
-#Set default environmental variables. 
 #Set the working directory of the dockerfile at this stage.
 ENV HOME /root
-
- 
-#ARG MPD_VERSION=5 
 
 #Set the mpd version. Makes it easier to update in the future.
 ARG MPD_MAJOR_VERSION=0.23 
 ARG MPD_MINOR_VERSION=8
 
-#Set the s6 overlay version. Makes running mpd much easier. 
-
-
 #Download the most recent MPD source file.
-#https://www.musicpd.org/download/mpd/0.23/mpd-0.23.5.tar.xz
 ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
 RUN tar xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
-
-#ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
-#RUN tar xf /tmp/mpc-${MPC_VERSION}.tar.xz
-
-#ADD https://www.musicpd.org/download/mpd/0.23/mpd-0.23.${MPD_VERSION}.tar.xz /tmp
-#RUN tar xf /tmp/mpd-0.23.${MPD_VERSION}.tar.xz -C /
-
-
 
 #Change the working directory to MPD for installation.
 WORKDIR mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
@@ -95,25 +76,19 @@ RUN meson . output
 RUN ninja -C output
 RUN ninja -C output install
 
-
 #Changing stage for the dockerfile to the configuration of MPD.
-#FROM alpine AS config
 FROM debian:stable-slim AS config
-ARG S6_VERSION=2.2.0.3
-ARG MPC_VERSION=0.34
 
-#Change the working directory to root.
-#WORKDIR $HOME
+#Set the s6 overlay version. Makes running mpd much easier. 
+ARG S6_VERSION=2.2.0.3
 
 COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
-#RUN apk update && apk add \
 RUN apt-get update && apt-get install -y \
 	libmpdclient-dev \
 	libdbus-1-3 \
 	libfmt-dev \
-#	libfmt-dev \
 	libpcre2-dev \
  	libmad0-dev libmpg123-dev libid3tag0-dev \
 	libflac-dev libvorbis-dev libopus-dev libogg-dev \
@@ -143,16 +118,10 @@ RUN apt-get update && apt-get install -y \
   	libgcrypt20-dev \
 	mosquitto-clients \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
-#	&& rm -fR /var/lib/apt/lists/*
+
 #Download the most recent s6 overlay.
 ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
 RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
-
-
-
-#Stopping the mpd service. Not certain if it's entirely necessary.
-#RUN mpd stop
-#RUN update-rc.d mpd disable 
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
@@ -162,7 +131,6 @@ RUN  mkdir -p /var/lib/mpd/music \
 
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
 VOLUME /var/lib/mpd/music /.mpd/playlists /tmp #/.config/mpd 
-#/usr/local/bin/mpd
 
 #Creating databases.
 RUN touch /.mpd/mpd.log \
@@ -183,7 +151,7 @@ COPY mpd.conf /usr/local/etc
 
 #Add permissions so that the configuration file will actually work
 RUN chmod 777 /usr/local/etc/mpd.conf
-#RUN chmod +rwx /usr/local/etc/mpd.conf
+
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
 
