@@ -79,7 +79,8 @@ RUN ninja -C output
 RUN ninja -C output install
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM debian:stable-slim AS config
+#FROM debian:stable-slim AS config
+FROM alpine AS config 
 
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
@@ -87,7 +88,8 @@ ARG S6_VERSION=2.2.0.3
 COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
-RUN apt-get update && apt-get install -y \
+#RUN apt-get update && apt-get install -y \
+RUN apk update && apk add \
 	libmpdclient-dev \
 	libdbus-1-3 \
 	libfmt-dev \
@@ -119,7 +121,7 @@ RUN apt-get update && apt-get install -y \
   	libchromaprint-dev \
   	libgcrypt20-dev \
 	mosquitto-clients \
-	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+#	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Download the most recent s6 overlay.
 ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
