@@ -38,8 +38,8 @@ RUN apt-get update && apt-get install -y \
 	ninja-build \
 	libboost-dev \
 	wget \
-	nano  
-#	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+	nano \
+	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
 FROM depend AS mpdbuild
@@ -115,7 +115,7 @@ RUN apt-get update && apt-get install -y \
   	libboost-dev \
   	libicu-dev \
   	libchromaprint-dev \
-#  	libgcrypt20-dev \
+  	libgcrypt20-dev \
 	mosquitto-clients \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
@@ -167,3 +167,5 @@ ENTRYPOINT ["/init"]
 
 #Exposing the port so that the container will send out it's information across the network. 
 EXPOSE 6600
+
+
