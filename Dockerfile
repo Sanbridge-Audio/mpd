@@ -40,8 +40,8 @@ RUN apk update && apk add \
 	ninja-build \
 	libboost-dev \
 	wget \
-	nano \
-	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+	nano  
+#	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
 FROM depend AS mpdbuild
