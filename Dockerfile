@@ -1,11 +1,9 @@
 #Start dockerfile by creating all the dependencies needed.
-FROM alpine AS depend 
-#FROM debian:stable AS depend
+FROM debian:stable AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
  
 #Installation of all of the dependencies needed to build Music Player Daemon from source.
 RUN apt-get update && apt-get install -y \
-#RUN apk add \
 	curl \
 	meson \
 	g++ \
@@ -79,8 +77,7 @@ RUN ninja -C output
 RUN ninja -C output install
 
 #Changing stage for the dockerfile to the configuration of MPD.
-#FROM debian:stable-slim AS config
-FROM alpine AS config 
+FROM debian:stable-slim AS config
 
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
@@ -89,7 +86,6 @@ COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 RUN apt-get update && apt-get install -y \
-#RUN apk update && apk add \
 	libmpdclient-dev \
 	libdbus-1-3 \
 	libfmt-dev \
