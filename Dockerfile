@@ -167,5 +167,3 @@ ENTRYPOINT ["/init"]
 
 #Exposing the port so that the container will send out it's information across the network. 
 EXPOSE 6600
-
-
