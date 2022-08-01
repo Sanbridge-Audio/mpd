@@ -1,5 +1,5 @@
 #Start dockerfile by creating all the dependencies needed.
-FROM alpine AS depend
+FROM alpine AS depend 
 #FROM debian:stable AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
  
