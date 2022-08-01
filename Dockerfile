@@ -4,8 +4,8 @@ FROM alpine AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
  
 #Installation of all of the dependencies needed to build Music Player Daemon from source.
-#RUN apt-get update && apt-get install -y \
-RUN apk add \
+RUN apt-get update && apt-get install -y \
+#RUN apk add \
 	curl \
 	meson \
 	g++ \
@@ -88,8 +88,8 @@ ARG S6_VERSION=2.2.0.3
 COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
-#RUN apt-get update && apt-get install -y \
-RUN apk update && apk add \
+RUN apt-get update && apt-get install -y \
+#RUN apk update && apk add \
 	libmpdclient-dev \
 	libdbus-1-3 \
 	libfmt-dev \
