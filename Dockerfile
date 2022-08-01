@@ -115,9 +115,9 @@ RUN apt-get update && apt-get install -y \
   	libboost-dev \
   	libicu-dev \
   	libchromaprint-dev \
-  	libgcrypt20-dev \
+#  	libgcrypt20-dev \
 	mosquitto-clients \
-#	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Download the most recent s6 overlay.
 ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
