@@ -39,6 +39,7 @@ RUN apt-get update && apt-get install -y \
 	libboost-dev \
 	wget \
 	nano \
+	xz \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
