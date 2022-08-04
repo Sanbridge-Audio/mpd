@@ -6,7 +6,7 @@ LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
 ENV HOME /root
 
 #Installation of MPD from alpine package.
-RUN apk update -a && apk add \
+RUN apk update  && apk add \
 	alsa-lib-dev \
 	sqlite-dev \
 	ffmpeg-dev \
