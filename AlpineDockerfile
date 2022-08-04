@@ -1,5 +1,5 @@
 #Start dockerfile by creating all the dependencies needed.
-FROM alpine AS depend 
+FROM alpine AS mpdbuild 
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
 
 #Set the working directory of the dockerfile at this stage.
@@ -8,13 +8,13 @@ ENV HOME /root
 RUN apk update && apk add mpd
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM depend AS config 
+FROM mpdbuild AS config 
 
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
 
-COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
-COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
+#COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
+#COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 
 #Download the most recent s6 overlay.
@@ -48,7 +48,7 @@ RUN chmod 777 /.mpd/mpd.log \
 COPY mpd.conf /usr/local/etc
 
 #Add permissions so that the configuration file will actually work
-RUN chmod 777 /usr/local/etc/mpd.conf
+#RUN chmod 777 /usr/local/etc/mpd.conf
 
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
