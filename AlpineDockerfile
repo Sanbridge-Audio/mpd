@@ -6,7 +6,15 @@ LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
 ENV HOME /root
 
 #Installation of MPD from alpine package.
-RUN apk update -a && apk add mpd
+RUN apk update -a && apk add \
+	mpd \
+	alsa-lib \
+        alsa-plugins-pulse \
+        alsa-utils \
+        libmpdclient \
+        libpulse \
+        mpc \
+	&& rm -rf /var/cache/apk/* /tmp/*
 
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM mpdbuild AS config 
@@ -48,7 +56,7 @@ COPY mpd.conf /usr/local/etc
 #RUN chmod 777 /usr/local/etc/mpd.conf
 
 #Copy a services file that will allow MPD to find the mpd.conf file. 
-COPY mpd.service /usr/local/lib/systemd/system 
+#COPY mpd.service /usr/local/lib/systemd/system 
 
 #Copy stations playlist into mpd playlists folder that was created earlier.
 COPY Stations.m3u /.mpd/playlists 
