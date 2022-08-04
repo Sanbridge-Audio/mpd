@@ -12,11 +12,11 @@ RUN apk update && apk add mpd
 FROM mpdbuild AS config 
 
 #Set the s6 overlay version. Makes running mpd much easier. 
-#ARG S6_VERSION=2.2.0.3
+ARG S6_VERSION=2.2.0.3
 
 #Download the most recent s6 overlay.
-#ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
-#RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
+ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
+RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
@@ -45,7 +45,7 @@ RUN chmod 777 /.mpd/mpd.log \
 COPY mpd.conf /usr/local/etc
 
 #Add permissions so that the configuration file will actually work
-#RUN chmod 777 /usr/local/etc/mpd.conf
+RUN chmod 777 /usr/local/etc/mpd.conf
 
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
