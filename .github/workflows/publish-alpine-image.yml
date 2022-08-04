@@ -1,0 +1,17 @@
+name: Publish Docker
+on: 
+  push:
+    branches:
+      - 'alpine'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@v4
+      with:
+        name: crowsbyte/mpd:develop
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: AlpineDockerfile
