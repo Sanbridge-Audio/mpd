@@ -5,18 +5,18 @@ LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
 #Set the working directory of the dockerfile at this stage.
 ENV HOME /root
 
-#Installation of MPD
+#Installation of MPD from alpine package.
 RUN apk update && apk add mpd
 
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM mpdbuild AS config 
 
 #Set the s6 overlay version. Makes running mpd much easier. 
-ARG S6_VERSION=2.2.0.3
+#ARG S6_VERSION=2.2.0.3
 
 #Download the most recent s6 overlay.
-ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
-RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
+#ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
+#RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
