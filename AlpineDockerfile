@@ -4,6 +4,7 @@ LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
 
 #Set the working directory of the dockerfile at this stage.
 ENV HOME /root
+
 #Installation of MPD
 RUN apk update && apk add mpd
 
@@ -12,10 +13,6 @@ FROM mpdbuild AS config
 
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
-
-#COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
-#COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
-
 
 #Download the most recent s6 overlay.
 ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
