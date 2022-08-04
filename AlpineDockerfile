@@ -1,18 +1,11 @@
 #Start dockerfile by creating all the dependencies needed.
 FROM alpine AS depend 
-#FROM debian:stable AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
- 
-
-#Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
-FROM depend AS mpdbuild
 
 #Set the working directory of the dockerfile at this stage.
 ENV HOME /root
-
-
 #Installation of MPD
-
+RUN apk update && apk add mpd
 
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM alpine AS config 
