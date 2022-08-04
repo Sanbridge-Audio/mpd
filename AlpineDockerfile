@@ -6,7 +6,7 @@ LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
 ENV HOME /root
 
 #Installation of MPD from alpine package.
-RUN apk update && apk add mpd
+RUN apk update -a && apk add mpd
 
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM mpdbuild AS config 
