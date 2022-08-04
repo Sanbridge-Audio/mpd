@@ -39,21 +39,23 @@ RUN apt-get update && apt-get install -y \
 	libboost-dev \
 	wget \
 	nano \
+	xz-utils \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
 FROM depend AS mpdbuild
+#RUN useradd -ms /bin/bash mpd
 
 #Set the working directory of the dockerfile at this stage.
 ENV HOME /root
-
+#USER mpd
 #Set the mpd version. Makes it easier to update in the future.
 ARG MPD_MAJOR_VERSION=0.23 
 ARG MPD_MINOR_VERSION=8
 
 #Download the most recent MPD source file.
 ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
-RUN tar xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
+RUN tar -xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
 
 #Change the working directory to MPD for installation.
 WORKDIR mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}

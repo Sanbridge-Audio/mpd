@@ -11,7 +11,7 @@ services:
     container_name: mpd-main
     environment:
       - PUID=1000
-      - PGID=100
+      - PGID=1000
       - TZ=America/New_York
     volumes:
       - /where/your/music/is/located:/var/lib/mpd/music
