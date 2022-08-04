@@ -47,7 +47,7 @@ FROM depend AS mpdbuild
 #RUN useradd -ms /bin/bash mpd
 
 #Set the working directory of the dockerfile at this stage.
-#ENV HOME /root
+ENV HOME /root
 USER mpd
 #Set the mpd version. Makes it easier to update in the future.
 ARG MPD_MAJOR_VERSION=0.23 
