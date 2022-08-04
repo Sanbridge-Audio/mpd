@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install -y \
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
 FROM depend AS mpdbuild
-RUN useradd -ms /bin/bash mpd
+#RUN useradd -ms /bin/bash mpd
 
 #Set the working directory of the dockerfile at this stage.
 #ENV HOME /root
