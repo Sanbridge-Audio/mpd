@@ -8,7 +8,7 @@ ENV HOME /root
 RUN apk update && apk add mpd
 
 #Changing stage for the dockerfile to the configuration of MPD.
-FROM alpine AS config 
+FROM depend AS config 
 
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
