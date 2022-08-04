@@ -1,11 +1,9 @@
 #Start dockerfile by creating all the dependencies needed.
-FROM alpine AS depend 
-#FROM debian:stable AS depend
+FROM debian:stable AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
  
 #Installation of all of the dependencies needed to build Music Player Daemon from source.
 RUN apt-get update && apt-get install -y \
-#RUN apk add \
 	curl \
 	meson \
 	g++ \
@@ -40,22 +38,24 @@ RUN apt-get update && apt-get install -y \
 	ninja-build \
 	libboost-dev \
 	wget \
-	nano  
-#	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+	nano \
+	xz-utils \
+	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
 FROM depend AS mpdbuild
+#RUN useradd -ms /bin/bash mpd
 
 #Set the working directory of the dockerfile at this stage.
 ENV HOME /root
-
+#USER mpd
 #Set the mpd version. Makes it easier to update in the future.
 ARG MPD_MAJOR_VERSION=0.23 
 ARG MPD_MINOR_VERSION=8
 
 #Download the most recent MPD source file.
 ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
-RUN tar xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
+RUN tar -xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
 
 #Change the working directory to MPD for installation.
 WORKDIR mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
@@ -79,8 +79,7 @@ RUN ninja -C output
 RUN ninja -C output install
 
 #Changing stage for the dockerfile to the configuration of MPD.
-#FROM debian:stable-slim AS config
-FROM alpine AS config 
+FROM debian:stable-slim AS config
 
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
@@ -89,7 +88,6 @@ COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 RUN apt-get update && apt-get install -y \
-#RUN apk update && apk add \
 	libmpdclient-dev \
 	libdbus-1-3 \
 	libfmt-dev \
@@ -121,7 +119,7 @@ RUN apt-get update && apt-get install -y \
   	libchromaprint-dev \
   	libgcrypt20-dev \
 	mosquitto-clients \
-#	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Download the most recent s6 overlay.
 ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
