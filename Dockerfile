@@ -54,8 +54,9 @@ ARG MPD_MAJOR_VERSION=0.23
 ARG MPD_MINOR_VERSION=8
 
 #Download the most recent MPD source file.
-ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
-RUN tar -xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
+RUN curl https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp | tar xzf - -C / 
+#ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
+#RUN tar -xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
 
 #Change the working directory to MPD for installation.
 WORKDIR mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
