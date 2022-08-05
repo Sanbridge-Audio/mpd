@@ -67,7 +67,7 @@ RUN ninja -C output/release install
 ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 
 ARG MPC_VERSION=0.34
-RUN curl https://www.musicpd.org/download/mpc/0/mpc-0.34.tar.xz | tar xf - -C /
+RUN curl https://www.musicpd.org/download/mpc/0/mpc-0.34.tar.xz | tar xzf - -C /
 #ADD https://www.musicpd.org/download/mpc/0/mpc-0.34.tar.xz /tmp
 #ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
 #RUN tar xf /tmp/mpc-0.34.tar.xz
@@ -123,7 +123,7 @@ RUN apt-get update && apt-get install -y \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Download the most recent s6 overlay.
-RUN curl https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz | tar xf - -C /
+RUN curl https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz | tar xzf - -C /
 #ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
 #RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 
