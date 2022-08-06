@@ -80,7 +80,7 @@ FROM debian:stable-slim AS config
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
 
-#COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
+COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 RUN apt-get update && apt-get install -y \
 	libmpdclient-dev \
