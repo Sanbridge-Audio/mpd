@@ -66,17 +66,13 @@ RUN ninja -C output/release
 RUN ninja -C output/release install
 ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 
-ARG MPC_VERSION=0.34
-ADD https://www.musicpd.org/download/mpc/0/mpc-0.34.tar.xz /tmp
-#ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
-RUN tar xf /tmp/mpc-0.34.tar.xz
-
-WORKDIR mpc-0.34
-
+#ARG MPC_VERSION=0.34
+##ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
+#
+#
 #Installation of MPC
-RUN meson . output
-RUN ninja -C output
-RUN ninja -C output install
+#RUN ninja -C output
+#RUN ninja -C output install
 
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM debian:stable-slim AS config
@@ -84,8 +80,7 @@ FROM debian:stable-slim AS config
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
 
-COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
-COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
+#COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 RUN apt-get update && apt-get install -y \
 	libmpdclient-dev \
