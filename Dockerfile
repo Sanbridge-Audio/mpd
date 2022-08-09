@@ -129,7 +129,7 @@ RUN  mkdir -p /var/lib/mpd/music \
 	&& chmod a+w ~/.mpd/playlists
 
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
-VOLUME /var/lib/mpd/music /.mpd/playlists /tmp 
+VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /opt/appdata
 
 #Creating databases.
 RUN touch /.mpd/mpd.log \
