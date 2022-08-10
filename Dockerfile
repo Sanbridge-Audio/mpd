@@ -66,17 +66,13 @@ RUN ninja -C output/release
 RUN ninja -C output/release install
 ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 
-ARG MPC_VERSION=0.34
-ADD https://www.musicpd.org/download/mpc/0/mpc-0.34.tar.xz /tmp
-#ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
-RUN tar xf /tmp/mpc-0.34.tar.xz
-
-WORKDIR mpc-0.34
-
+#ARG MPC_VERSION=0.34
+##ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
+#
+#
 #Installation of MPC
-RUN meson . output
-RUN ninja -C output
-RUN ninja -C output install
+#RUN ninja -C output
+#RUN ninja -C output install
 
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM debian:stable-slim AS config
@@ -84,7 +80,6 @@ FROM debian:stable-slim AS config
 #Set the s6 overlay version. Makes running mpd much easier. 
 ARG S6_VERSION=2.2.0.3
 
-COPY --from=mpdbuild /usr/local/bin/mpc /usr/local/bin
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 RUN apt-get update && apt-get install -y \
@@ -119,6 +114,7 @@ RUN apt-get update && apt-get install -y \
   	libchromaprint-dev \
   	libgcrypt20-dev \
 	mosquitto-clients \
+#	mpdscribble \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Download the most recent s6 overlay.
@@ -129,10 +125,11 @@ RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 RUN  mkdir -p /var/lib/mpd/music \
 	&& mkdir -p ~/.mpd/playlists \
 	&& mkdir -p ~/.config/mpd \
+	&& mkdir -p /opt/appdata \
 	&& chmod a+w ~/.mpd/playlists
 
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
-VOLUME /var/lib/mpd/music /.mpd/playlists /tmp 
+VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc
 
 #Creating databases.
 RUN touch /.mpd/mpd.log \
@@ -153,7 +150,7 @@ COPY mpd.conf /usr/local/etc
 
 #Add permissions so that the configuration file will actually work
 RUN chmod 777 /usr/local/etc/mpd.conf
-
+#RUN ln -s /usr/local/etc/mpd.conf /opt/appdata
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
 
@@ -168,6 +165,6 @@ CMD ["mpd", "--stdout", "--no-daemon"]
 ENTRYPOINT ["/init"]
 
 #Exposing the port so that the container will send out it's information across the network. 
-EXPOSE 6600
+EXPOSE 6600 8801
 
 

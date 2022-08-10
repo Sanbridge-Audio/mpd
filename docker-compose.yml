@@ -9,6 +9,7 @@ services:
      network: host
     image: crowsbyte/mpd
     container_name: mpd-main
+    hostname: mpd
     environment:
       - PUID=1000
       - PGID=1000
