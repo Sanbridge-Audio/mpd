@@ -162,6 +162,7 @@ COPY Stations.m3u /.mpd/playlists
 
 FROM config as mpd
 ENV TZ="America/New_York"
+ENV HOSTNAME mpd
 #Consistent command across multiple types of mpd dockerfiles.
 CMD ["mpd", "--stdout", "--no-daemon"]
 
