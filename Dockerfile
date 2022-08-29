@@ -2,9 +2,10 @@
 FROM debian:stable AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
  
-#Installation of all of the dependencies needed to build Music Player Daemon from source.
+#Installation of all of the dependencies needed to build Music Player Daemon from source. 
 RUN apt-get update && apt-get install -y \
 	curl \
+	git \
 	meson \
 	g++ \
 	libfmt-dev \
@@ -53,13 +54,15 @@ ENV HOME /root
 ARG MPD_MAJOR_VERSION=0.23 
 ARG MPD_MINOR_VERSION=8
 
+
+RUN git clone https://github.com/MusicPlayerDaemon/MPD
 #Download the most recent MPD source file.
-ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
-RUN tar -xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
+#ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
+#RUN tar -xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
 
 #Change the working directory to MPD for installation.
-WORKDIR mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
-
+#
+WORKDIR MPD
 #Installation of MPD
 RUN meson . output/release --buildtype=debugoptimized -Db_ndebug=true 
 RUN ninja -C output/release
@@ -159,6 +162,7 @@ COPY Stations.m3u /.mpd/playlists
 
 FROM config as mpd
 ENV TZ="America/New_York"
+#ENV HOSTNAME=mpd
 #Consistent command across multiple types of mpd dockerfiles.
 CMD ["mpd", "--stdout", "--no-daemon"]
 
