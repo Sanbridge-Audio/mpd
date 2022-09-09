@@ -131,8 +131,7 @@ RUN  mkdir -p /var/lib/mpd/music \
 	&& mkdir -p /opt/appdata \
 	&& chmod a+w ~/.mpd/playlists
 
-#Create music, playlist, tmp (for sending audio to snapcast) and config folder.
-VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc
+
 
 #Creating databases.
 RUN touch /.mpd/mpd.log \
@@ -147,6 +146,9 @@ RUN chmod 777 /.mpd/mpd.log \
 	&& chown 777 /.mpd/pid \
 	&& chmod 777 /.mpd/mpdstate \
 	&& chmod 777 /.mpd/tag_cache
+
+#Create music, playlist, tmp (for sending audio to snapcast) and config folder.
+VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc /.mpd/tag_cache
 
 #Copy preset configuration file into image from folder. 
 COPY mpd.conf /usr/local/etc
