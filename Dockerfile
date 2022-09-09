@@ -117,6 +117,7 @@ RUN apt-get update && apt-get install -y \
   	libchromaprint-dev \
   	libgcrypt20-dev \
 	mosquitto-clients \
+	flac \
 #	mpdscribble \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
