@@ -150,7 +150,7 @@ ENV TZ="America/New_York"
 
 #Consistent command across multiple types of mpd dockerfiles.
 #Command, --variable, --variable
-CMD ["mpd", "--stdout", "--no-daemon"]
+CMD ["mpd", "--stdout", "--no-daemon", "setvol 50"]
 
 ENTRYPOINT ["/init"]
 
