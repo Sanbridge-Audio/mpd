@@ -104,10 +104,10 @@ RUN apt-get update && apt-get install -y \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Download the most recent s6 overlay.
-#ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
-#RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
-ADD https://github.com/just-containers/s6-overlay/releases/download/v3.1.2.1/s6-overlay-noarch.tar.xz /tmp
-RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
+RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
+#ADD https://github.com/just-containers/s6-overlay/releases/download/v3.1.2.1/s6-overlay-noarch.tar.xz /tmp
+#RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
@@ -149,6 +149,8 @@ COPY Stations.m3u /.mpd/playlists
 FROM config as mpd
 ENV TZ="America/New_York"
 #ENV HOSTNAME=mpd
+
+RUN date > /root/tmp_variable
 
 #Consistent command across multiple types of mpd dockerfiles.
 #Command, --variable, --variable
