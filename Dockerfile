@@ -137,7 +137,7 @@ FROM gcr.io/distroless/base-debian11 as distroless
 
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 COPY --from=config /var/lib/mpd/music /var/lib
-COPY --from=config ~/.mpd ~/.
+COPY --from=config ~/.mpd .
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
 
