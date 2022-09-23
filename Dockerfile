@@ -58,13 +58,9 @@ WORKDIR MPD
 RUN meson . output/release --buildtype=debugoptimized -Db_ndebug=true 
 RUN ninja -C output/release
 RUN ninja -C output/release install
-ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
 
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM debian:stable-slim AS config
-
-#Set the s6 overlay version. Makes running mpd much easier. 
-ARG S6_VERSION=2.2.0.3
 
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
@@ -102,12 +98,6 @@ RUN apt-get update && apt-get install -y \
   	libgcrypt20-dev \
 	mosquitto-clients \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
-
-#Download the most recent s6 overlay.
-#ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
-#RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
-#ADD https://github.com/just-containers/s6-overlay/releases/download/v3.1.2.1/s6-overlay-noarch.tar.xz /tmp
-#RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
@@ -153,12 +143,8 @@ ENV TZ="America/New_York"
 RUN date > /root/tmp_variable
 
 #Consistent command across multiple types of mpd dockerfiles.
-#Command, --variable, --variable
-#CMD ["mpd", "--stdout", "--no-daemon"]
 CMD ["--stdout", "--no-daemon"]
 ENTRYPOINT ["mpd"]
 
 #Exposing the port so that the container will send out it's information across the network. 
 EXPOSE 6600 8801
-
-
