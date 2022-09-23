@@ -6,7 +6,6 @@ LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
 RUN apt-get update && apt-get install -y \
 	curl \
 	git \
-	meson \
 	g++ \
 	libfmt-dev \
 	libpcre2-dev \
@@ -36,58 +35,39 @@ RUN apt-get update && apt-get install -y \
 	libicu-dev \
 	libchromaprint-dev \
 	libgcrypt20-dev \
-	ninja-build \
 	libboost-dev \
-	wget \
+	meson \
 	nano \
+	ninja-build \
+	wget \
 	xz-utils \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Setting a new stage for the dockerfile so that the cache can be utilized and the build can be sped up.
 FROM depend AS mpdbuild
-#RUN useradd -ms /bin/bash mpd
 
 #Set the working directory of the dockerfile at this stage.
 ENV HOME /root
-#USER mpd
-#Set the mpd version. Makes it easier to update in the future.
-ARG MPD_MAJOR_VERSION=0.23 
-ARG MPD_MINOR_VERSION=8
-
 
 RUN git clone https://github.com/MusicPlayerDaemon/MPD
-#Download the most recent MPD source file.
-#ADD https://www.musicpd.org/download/mpd/${MPD_MAJOR_VERSION}/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz /tmp
-#RUN tar -xf /tmp/mpd-${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}.tar.xz -C /
 
 #Change the working directory to MPD for installation.
-#
 WORKDIR MPD
+
 #Installation of MPD
 RUN meson . output/release --buildtype=debugoptimized -Db_ndebug=true 
 RUN ninja -C output/release
 RUN ninja -C output/release install
-ENV Version=${MPD_MAJOR_VERSION}.${MPD_MINOR_VERSION}
-
-#ARG MPC_VERSION=0.34
-##ADD https://www.musicpd.org/download/mpc/0/mpc-${MPC_VERSION}.tar.xz /tmp
-#
-#
-#Installation of MPC
-#RUN ninja -C output
-#RUN ninja -C output install
 
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM debian:stable-slim AS config
 
-#Set the s6 overlay version. Makes running mpd much easier. 
-ARG S6_VERSION=2.2.0.3
-
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 RUN apt-get update && apt-get install -y \
-	libmpdclient-dev \
+	flac \
 	libdbus-1-3 \
+	libmpdclient-dev \
 	libfmt-dev \
 	libpcre2-dev \
  	libmad0-dev libmpg123-dev libid3tag0-dev \
@@ -117,12 +97,7 @@ RUN apt-get update && apt-get install -y \
   	libchromaprint-dev \
   	libgcrypt20-dev \
 	mosquitto-clients \
-#	mpdscribble \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
-
-#Download the most recent s6 overlay.
-ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
-RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
@@ -154,6 +129,7 @@ COPY mpd.conf /usr/local/etc
 #Add permissions so that the configuration file will actually work
 RUN chmod 777 /usr/local/etc/mpd.conf
 #RUN ln -s /usr/local/etc/mpd.conf /opt/appdata
+
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
 
@@ -163,12 +139,12 @@ COPY Stations.m3u /.mpd/playlists
 FROM config as mpd
 ENV TZ="America/New_York"
 #ENV HOSTNAME=mpd
-#Consistent command across multiple types of mpd dockerfiles.
-CMD ["mpd", "--stdout", "--no-daemon"]
 
-ENTRYPOINT ["/init"]
+RUN date > /root/tmp_variable
+
+#Consistent command across multiple types of mpd dockerfiles.
+CMD ["--stdout", "--no-daemon"]
+ENTRYPOINT ["mpd"]
 
 #Exposing the port so that the container will send out it's information across the network. 
 EXPOSE 6600 8801
-
-
