@@ -114,10 +114,10 @@ RUN  mkdir -p /var/lib/mpd/music \
 
 #Creating databases.
 RUN touch  ~/.mpd/mpd.log \
-	&& touch /.mpd/sticker.sql \
-	&& touch /.mpd/pid \
-	&& touch /.mpd/mpdstate \
-	&& touch /.mpd/tag_cache
+	&& touch ~/.mpd/sticker.sql \
+	&& touch ~/.mpd/pid \
+	&& touch ~/.mpd/mpdstate \
+	&& touch ~/.mpd/tag_cache
 
 #Add permissions to created databases
 RUN chmod 777 /.mpd/mpd.log \
