@@ -63,7 +63,7 @@ RUN ninja -C output/release install
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM debian:stable-slim AS config
 
-COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
+
 
 #RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get -y install --no-install-recommends \
@@ -100,6 +100,10 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
   	libgcrypt20-dev \
 	mosquitto-clients \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
+
+FROM gcr.io/distroless/base-debian11 as distroless
+
+COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
