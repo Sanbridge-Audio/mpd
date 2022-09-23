@@ -1,6 +1,6 @@
 #Start dockerfile by creating all the dependencies needed.
 FROM debian:stable AS depend
-LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
+LABEL maintainer="Matt Dickinson <matt@sanbridge.org>"
  
 #Installation of all of the dependencies needed to build Music Player Daemon from source. 
 RUN apt-get update && apt-get install -y \
@@ -65,8 +65,8 @@ FROM debian:stable-slim AS config
 
 
 
-#RUN apt-get update && apt-get install -y \
-RUN apt-get update && apt-get -y install --no-install-recommends \
+RUN apt-get update && apt-get install -y \
+#RUN apt-get update && apt-get -y install --no-install-recommends \
 	flac \
 	libdbus-1-3 \
 	libmpdclient-dev \
@@ -101,19 +101,16 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 	mosquitto-clients \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
-FROM gcr.io/distroless/base-debian11 as distroless
-
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
+	&& mkdir -p ~/.mpd \
 	&& mkdir -p ~/.mpd/playlists \
 	&& mkdir -p ~/.config/mpd \
 	&& mkdir -p /opt/appdata \
 	&& chmod a+w ~/.mpd/playlists
 
-#Create music, playlist, tmp (for sending audio to snapcast) and config folder.
-VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc
 
 #Creating databases.
 RUN touch /.mpd/mpd.log \
@@ -136,11 +133,19 @@ COPY mpd.conf /usr/local/etc
 RUN chmod 777 /usr/local/etc/mpd.conf
 #RUN ln -s /usr/local/etc/mpd.conf /opt/appdata
 
+FROM gcr.io/distroless/base-debian11 as distroless
+
+COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
+COPY --from=config /var/lib/mpd/music /var/lib
+COPY --from=config /.mpd/ /
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
 
 #Copy stations playlist into mpd playlists folder that was created earlier.
 COPY Stations.m3u /.mpd/playlists 
+
+#Create music, playlist, tmp (for sending audio to snapcast) and config folder.
+VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc
 
 FROM config as mpd
 ENV TZ="America/New_York"
