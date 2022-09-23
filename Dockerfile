@@ -3,8 +3,8 @@ FROM debian:stable AS depend
 LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
  
 #Installation of all of the dependencies needed to build Music Player Daemon from source. 
-#RUN apt-get update && apt-get install -y \
-RUN apt-get update && apt-get -y install --no-install-recommends \
+RUN apt-get update && apt-get install -y \
+#RUN apt-get update && apt-get -y install --no-install-recommends \
 	curl \
 	git \
 	g++ \
