@@ -113,7 +113,7 @@ RUN  mkdir -p /var/lib/mpd/music \
 
 
 #Creating databases.
-RUN touch /.mpd/mpd.log \
+RUN touch  ~/.mpd/mpd.log \
 	&& touch /.mpd/sticker.sql \
 	&& touch /.mpd/pid \
 	&& touch /.mpd/mpdstate \
