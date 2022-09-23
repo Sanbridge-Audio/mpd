@@ -104,8 +104,8 @@ RUN apt-get update && apt-get install -y \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Download the most recent s6 overlay.
-ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
-RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
+#ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp
+#RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 #ADD https://github.com/just-containers/s6-overlay/releases/download/v3.1.2.1/s6-overlay-noarch.tar.xz /tmp
 #RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 
@@ -154,9 +154,9 @@ RUN date > /root/tmp_variable
 
 #Consistent command across multiple types of mpd dockerfiles.
 #Command, --variable, --variable
-CMD ["mpd", "--stdout", "--no-daemon"]
-
-ENTRYPOINT ["/init"]
+#CMD ["mpd", "--stdout", "--no-daemon"]
+CMD ["--stdout", "--no-daemon"]
+ENTRYPOINT ["mpd"]
 
 #Exposing the port so that the container will send out it's information across the network. 
 EXPOSE 6600 8801
