@@ -120,11 +120,11 @@ RUN touch  ~/.mpd/mpd.log \
 	&& touch ~/.mpd/tag_cache
 
 #Add permissions to created databases
-RUN chmod 777 /.mpd/mpd.log \
-	&& chmod 777 /.mpd/sticker.sql \
-	&& chown 777 /.mpd/pid \
-	&& chmod 777 /.mpd/mpdstate \
-	&& chmod 777 /.mpd/tag_cache
+RUN chmod 777 ~/.mpd/mpd.log \
+	&& chmod 777 ~/.mpd/sticker.sql \
+	&& chown 777 ~/.mpd/pid \
+	&& chmod 777 ~/.mpd/mpdstate \
+	&& chmod 777 ~/.mpd/tag_cache
 
 #Copy preset configuration file into image from folder. 
 COPY mpd.conf /usr/local/etc
