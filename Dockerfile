@@ -149,7 +149,7 @@ COPY Stations.m3u /.mpd/playlists
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
 VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc
 
-FROM config as mpd
+#FROM config as mpd
 ENV TZ="America/New_York"
 #ENV HOSTNAME=mpd
 
