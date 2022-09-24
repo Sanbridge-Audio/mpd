@@ -139,7 +139,7 @@ COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 COPY --from=config /var/lib/mpd/music /var/lib
 
 WORKDIR /root/
-COPY --from=config /mpd ./
+COPY --from=config ~/mpd .
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
 
@@ -147,7 +147,7 @@ COPY mpd.service /usr/local/lib/systemd/system
 COPY Stations.m3u /mpd/playlists 
 
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
-VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc
+VOLUME /var/lib/mpd/music /mpd/playlists /tmp /usr/local/etc
 
 #FROM config as mpd
 ENV TZ="America/New_York"
