@@ -144,7 +144,7 @@ COPY --from=config /mpd ./
 COPY mpd.service /usr/local/lib/systemd/system 
 
 #Copy stations playlist into mpd playlists folder that was created earlier.
-COPY Stations.m3u /.mpd/playlists 
+COPY Stations.m3u /mpd/playlists 
 
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
 VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc
