@@ -105,26 +105,26 @@ COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
-	&& mkdir -p ~/.mpd \
-	&& mkdir -p ~/.mpd/playlists \
-	&& mkdir -p ~/.config/mpd \
+	&& mkdir -p ~/mpd \
+	&& mkdir -p ~/mpd/playlists \
+	&& mkdir -p ~/config/mpd \
 	&& mkdir -p /opt/appdata \
-	&& chmod a+w ~/.mpd/playlists
+	&& chmod a+w ~/mpd/playlists
 
 
 #Creating databases.
-RUN touch  ~/.mpd/mpd.log \
-	&& touch ~/.mpd/sticker.sql \
-	&& touch ~/.mpd/pid \
-	&& touch ~/.mpd/mpdstate \
-	&& touch ~/.mpd/tag_cache
+RUN touch  ~/mpd/mpd.log \
+	&& touch ~/mpd/sticker.sql \
+	&& touch ~/mpd/pid \
+	&& touch ~/mpd/mpdstate \
+	&& touch ~/mpd/tag_cache
 
 #Add permissions to created databases
-RUN chmod 777 ~/.mpd/mpd.log \
-	&& chmod 777 ~/.mpd/sticker.sql \
-	&& chown 777 ~/.mpd/pid \
-	&& chmod 777 ~/.mpd/mpdstate \
-	&& chmod 777 ~/.mpd/tag_cache
+RUN chmod 777 ~/mpd/mpd.log \
+	&& chmod 777 ~/mpd/sticker.sql \
+	&& chown 777 ~/mpd/pid \
+	&& chmod 777 ~/mpd/mpdstate \
+	&& chmod 777 ~/mpd/tag_cache
 
 #Copy preset configuration file into image from folder. 
 COPY mpd.conf /usr/local/etc
@@ -139,7 +139,7 @@ COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 COPY --from=config /var/lib/mpd/music /var/lib
 
 WORKDIR /root/
-COPY --from=config /.mpd ./
+COPY --from=config /mpd ./
 #Copy a services file that will allow MPD to find the mpd.conf file. 
 COPY mpd.service /usr/local/lib/systemd/system 
 
