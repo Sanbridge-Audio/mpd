@@ -99,6 +99,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
   	libchromaprint-dev \
   	libgcrypt20-dev \
 	mosquitto-clients \
+	vorbis-tools \
 	&& apt-get clean && rm -fR /var/lib/apt/lists/*
 
 #Make needed directories. Should match the config file.
