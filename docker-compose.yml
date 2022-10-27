@@ -15,7 +15,7 @@ services:
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - /where/your/music/is/located:/var/lib/mpd/music
+#      - /where/your/music/is/located:/var/lib/mpd/music
       - snap-fifo:/tmp
       - playlists:/.mpd/playlists
     ports:
