@@ -1,7 +1,7 @@
 #Start dockerfile by creating all the dependencies needed.
 ARG VERSION=stable
 FROM debian:${VERSION} AS depend
-LABEL maintainer="Matt Dickinson <matt@sanbridge.org>" 
+LABEL maintainer="Matt Dickinson" 
  
 #Installation of all of the dependencies needed to build Music Player Daemon from source.  
 RUN apt-get update && apt-get install -y \
@@ -142,6 +142,9 @@ COPY Stations.m3u /.mpd/playlists
 FROM config as mpd
 ENV TZ="America/New_York"
 #ENV HOSTNAME=mpd
+#RUN groupadd -r audio \
+RUN useradd -r -g audio mpd
+USER mpd
 
 RUN date > /root/tmp_variable
 
