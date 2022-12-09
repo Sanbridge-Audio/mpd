@@ -63,6 +63,8 @@ RUN ninja -C output/release install
 #Changing stage for the dockerfile to the configuration of MPD.
 FROM debian:stable-slim AS config
 
+
+
 COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 #RUN apt-get update && apt-get install -y \
@@ -122,7 +124,8 @@ RUN touch /.mpd/mpd.log \
 #Add permissions to created databases
 RUN chmod 777 /.mpd/mpd.log \
 	&& chmod 777 /.mpd/sticker.sql \
-	&& chown 777 /.mpd/pid \
+	&& chmod 777 /.mpd/pid \
+#	&& chown 777 /.mpd/pid \
 	&& chmod 777 /.mpd/mpdstate \
 	&& chmod 777 /.mpd/tag_cache
 
@@ -140,17 +143,39 @@ COPY mpd.service /usr/local/lib/systemd/system
 COPY Stations.m3u /.mpd/playlists 
 
 FROM config as mpd
-ENV TZ="America/New_York"
-#ENV HOSTNAME=mpd
-#RUN groupadd -r audio \
-RUN useradd -r -g audio mpd
-USER mpd
+ARG USERNAME=matt
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
-RUN date > /root/tmp_variable
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    #
+    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# ********************************************************
+# * Anything else you want to do like clean up goes here *
+# ********************************************************
+
+# [Optional] Set the default user. Omit if you want to keep the default as root.
+USER $USERNAME
+
+ENV TZ="America/New_York"
+
+
+#RUN date > /root/tmp_variable
+
 
 #Consistent command across multiple types of mpd dockerfiles.
-CMD ["--stdout", "--no-daemon"]
-ENTRYPOINT ["mpd"]
+#CMD ["--stdout", "--no-daemon"]
+#ENTRYPOINT ["mpd"]
+
+CMD mpd --stdout --no-daemon
 
 #Exposing the port so that the container will send out it's information across the network. 
 EXPOSE 6600 8801
+
