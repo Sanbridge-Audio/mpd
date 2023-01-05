@@ -1,4 +1,4 @@
-name: Publish Docker
+name: distroless-test-image
 on: 
   push:
     branches:
