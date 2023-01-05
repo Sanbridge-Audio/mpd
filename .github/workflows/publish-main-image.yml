@@ -3,7 +3,7 @@ name: publish-main-image
 on:
   push:
     branches:
-      - 'develop'
+      - 'main'
 
 jobs:
   docker:
@@ -32,4 +32,4 @@ jobs:
 #          platforms: linux/arm/v7
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           push: true
-          tags: crowsbyte/mpd:devlatest
+          tags: crowsbyte/mpd:latest
