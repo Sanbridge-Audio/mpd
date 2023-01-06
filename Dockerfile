@@ -110,7 +110,8 @@ RUN  mkdir -p /var/lib/mpd/music \
 	&& mkdir -p ~/.mpd/playlists \
 	&& mkdir -p ~/.config/mpd \
 	&& mkdir -p /opt/appdata \
-	&& chmod a+w ~/.mpd/playlists
+	&& chmod a+w ~/.mpd
+	#	&& chmod a+w ~/.mpd/playlists
 
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
 VOLUME /var/lib/mpd/music /.mpd/playlists /tmp /usr/local/etc
