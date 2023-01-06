@@ -1,16 +1,16 @@
 name: build-develop
 # Controls when the workflow will run
 on:
-  workflow_dispatch
-#  push:
-  #  branches:
- #     - 'develop' 
+#  workflow_dispatch
+  push:
+    branches:
+      - 'develop' 
  #   tags:
  #     - 'v*.*.*'
-  pull_request:
-    branches:
+#  pull_request:
+#    branches:
   #    - 'main'
-      - 'develop'
+ #     - 'develop'
 
 # permissions are needed if pushing to ghcr.io
 permissions: 
