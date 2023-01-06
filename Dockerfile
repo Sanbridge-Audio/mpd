@@ -106,6 +106,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 
 #Make needed directories. Should match the config file.
 RUN  mkdir -p /var/lib/mpd/music \
+  && mkdir -p ~/.mpd \
 	&& mkdir -p ~/.mpd/playlists \
 	&& mkdir -p ~/.config/mpd \
 	&& mkdir -p /opt/appdata \
