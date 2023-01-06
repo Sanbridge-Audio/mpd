@@ -110,7 +110,7 @@ RUN  mkdir -p /var/lib/mpd/music \
 	&& mkdir -p ~/.mpd/playlists \
 	&& mkdir -p ~/.config/mpd \
 	&& mkdir -p /opt/appdata \
-	&& chmod a+w ~/.mpd
+	&& chmod 777 ~/.mpd
 	#	&& chmod a+w ~/.mpd/playlists
 
 #Create music, playlist, tmp (for sending audio to snapcast) and config folder.
@@ -145,9 +145,9 @@ COPY mpd.service /usr/local/lib/systemd/system
 COPY Stations.m3u /.mpd/playlists 
 
 FROM config as mpd
-ARG USERNAME=matt
+#ARG USERNAME=matt
 ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+#ARG USER_GID=$USER_UID
 
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
