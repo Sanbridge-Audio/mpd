@@ -2,7 +2,7 @@ name: build-develop
 # Controls when the workflow will run
 on:
   workflow_dispatch
-  push:
+#  push:
     branches:
       - 'develop'
  #   tags:
