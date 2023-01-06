@@ -1,73 +1,67 @@
-name: build-develop
-# Controls when the workflow will run
+---
+name: 'build develop'
+
 on:
-#  workflow_dispatch
   push:
     branches:
-      - 'develop' 
- #   tags:
- #     - 'v*.*.*'
-#  pull_request:
-#    branches:
-  #    - 'main'
- #     - 'develop'
-
-# permissions are needed if pushing to ghcr.io
-permissions: 
-  packages: write
+      - develop
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
     steps:
-# Get the repository's code
       - name: Checkout
         uses: actions/checkout@v2
-      # https://github.com/docker/setup-qemu-action
+
+      - name: Prepare
+        id: prep
+        run: |
+          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${GITHUB_REPOSITORY#*/}
+          VERSION=latest
+          SHORTREF=${GITHUB_SHA::8}
+
+          # If this is git tag, use the tag name as a docker tag
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          fi
+          TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${SHORTREF}"
+
+          # If the VERSION looks like a version number, assume that
+          # this is the most recent version of the image and also
+          # tag it 'latest'.
+          if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+            TAGS="$TAGS,${DOCKER_IMAGE}:latest"
+          fi
+
+          # Set output parameters.
+          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=docker_image::${DOCKER_IMAGE}
+
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      # https://github.com/docker/setup-buildx-action
+        uses: docker/setup-qemu-action@master
+        with:
+          platforms: all
+
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to GHCR
+        uses: docker/setup-buildx-action@master
+
+      - name: Login to DockerHub
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Login to Docker Hub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Docker meta
-        id: develop # you'll use this in the next step 
-        uses: docker/metadata-action@v3
-        with:
-          # list of Docker images to use as base name for tags
-          images: |
-            crowsbyte/mpd
-          # Docker tags based on the following events/attributes
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-#            type=semver,pattern={{version}}
- #           type=semver,pattern={{major}}.{{minor}}
- #           type=semver,pattern={{major}}
- #           type=sha
-- name: Build and push
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build
         uses: docker/build-push-action@v2
         with:
+          builder: ${{ steps.buildx.outputs.name }}
           context: .
+          file: ./Dockerfile
           platforms: linux/amd64,linux/arm/v7
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.develop.outputs.tags }}
-          labels: ${{ steps.develop.outputs.labels }}
-
+          push: true
+          tags: ${{ steps.prep.outputs.tags }}
 
 
 #          platforms: linux/arm/v7
