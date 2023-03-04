@@ -171,10 +171,6 @@ FROM config as mpd
 
 ENV TZ="America/New_York"
 
-
-#RUN date > /root/tmp_variable
-
-
 #Consistent command across multiple types of mpd dockerfiles.
 #CMD ["--stdout", "--no-daemon"]
 #ENTRYPOINT ["mpd"]
