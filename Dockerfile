@@ -69,7 +69,7 @@ COPY --from=mpdbuild /usr/local/bin/mpd /usr/local/bin
 
 #RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get -y install --no-install-recommends \
-  curl \
+	curl \
 	flac \
 	libdbus-1-3 \
 	libmpdclient-dev \
