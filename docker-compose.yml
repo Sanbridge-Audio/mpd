@@ -7,7 +7,7 @@ services:
     build:
      context: .
      network: host
-    image: mpd-test
+    image: crowsbyte/mpd
     container_name: mpd-main
     hostname: mpd
     environment:
