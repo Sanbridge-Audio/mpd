@@ -1,22 +1,25 @@
 version: "3.9"
-
 services:
   mpd:
-    image: alpine-mpd
-    privileged: true
+    image: alpine-mpd                          privileged: true
     ports:
       - "6600:6600"
     volumes:
-      - /mpd.conf:/etc/mpd.conf:ro
-      - omv_music:/var/lib/mpd/music
-      - playlistnf4:/var/lib/mpd/playlists
-    devices:
+      - /home/pi/mpdconf/mpd.conf:/etc/mpd.conf:ro
+      - nfs_music:/var/lib/mpd/music             - nfs_playlist:/var/lib/mpd/playlists    devices:
       - /dev/snd:/dev/snd
     restart: always
     user: mpd
-
 volumes:
-  omv_music:
-    external: true
-  playlistnf4:
-    external: true
+  nfs_music:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.198,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: ":/music"
+  nfs_playlist:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.198,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: ":/playlist"
