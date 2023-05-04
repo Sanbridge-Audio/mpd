@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   mpd:
-    image: alpine-mpd                          privileged: true
+    image: mini-mpd                          privileged: true
     ports:
       - "6600:6600"
     volumes:
