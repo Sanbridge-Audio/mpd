@@ -1,12 +1,15 @@
 version: "3.9"
 services:
   mpd:
-    image: mini-mpd                          privileged: true
+    image: mini-mpd                          
+    privileged: true
     ports:
       - "6600:6600"
     volumes:
       - /home/pi/mpdconf/mpd.conf:/etc/mpd.conf:ro
-      - nfs_music:/var/lib/mpd/music             - nfs_playlist:/var/lib/mpd/playlists    devices:
+      - nfs_music:/var/lib/mpd/music             
+      - nfs_playlist:/var/lib/mpd/playlists    
+    devices:
       - /dev/snd:/dev/snd
     restart: always
     user: mpd
