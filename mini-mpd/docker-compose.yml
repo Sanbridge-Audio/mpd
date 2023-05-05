@@ -14,6 +14,8 @@ services:
     restart: always
     user: mpd
     network_mode: host
+    stdin_open: true   # enable interactive flag
+    tty: true
 volumes:
   nfs_music:
     driver: local
