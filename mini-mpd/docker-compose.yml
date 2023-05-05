@@ -13,6 +13,7 @@ services:
       - /dev/snd:/dev/snd
     restart: always
     user: mpd
+    network_mode: host
 volumes:
   nfs_music:
     driver: local
