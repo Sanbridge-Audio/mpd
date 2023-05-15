@@ -1,7 +1,8 @@
 FROM debian:stable-slim
 
 RUN apt-get update && \
-    apt-get install -y mpd xz-utils && \
+    apt-get install -y mpd xz-utils pulse audio pulseaudio-utils
+ && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
