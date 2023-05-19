@@ -1,7 +1,8 @@
 version: "3.9"
 services:
   mpd:
-    image: mini-mpd                          
+#    image: mini-mpd                          
+    build: .
     privileged: true
     ports:
       - "6600:6600"
