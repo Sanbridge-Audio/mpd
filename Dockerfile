@@ -10,20 +10,48 @@ RUN apt update && apt install -y \
 	g++ \
 	libfmt-dev \
 	libpcre2-dev \
-	libmad0-dev libmpg123-dev libid3tag0-dev \
-	libflac-dev libvorbis-dev libopus-dev libogg-dev \
-	libadplug-dev libaudiofile-dev libsndfile1-dev libfaad-dev \
-	libfluidsynth-dev libgme-dev libmikmod-dev libmodplug-dev \
-	libmpcdec-dev libwavpack-dev libwildmidi-dev \
-	libsidplay2-dev libsidutils-dev libresid-builder-dev \
-	libavcodec-dev libavformat-dev \
-	libmp3lame-dev libtwolame-dev libshine-dev \
-	libsamplerate0-dev libsoxr-dev \
-	libbz2-dev libcdio-paranoia-dev libiso9660-dev libmms-dev \
+	libmad0-dev \ 
+	libmpg123-dev \
+	libid3tag0-dev \
+	libflac-dev \
+	libvorbis-dev \
+	libopus-dev \
+	libogg-dev \
+	libadplug-dev \
+	libaudiofile-dev \
+	libsndfile1-dev \
+	libfaad-dev \
+	libfluidsynth-dev \
+	libgme-dev \
+	libmikmod-dev \
+	libmodplug-dev \
+	libmpcdec-dev \
+	libwavpack-dev \
+	libwildmidi-dev \
+	libsidplay2-dev \
+	libsidutils-dev \
+	libresid-builder-dev \
+	libavcodec-dev \
+	libavformat-dev \
+	libmp3lame-dev \
+	libtwolame-dev \
+	libshine-dev \
+	libsamplerate0-dev \
+	libsoxr-dev \
+	libbz2-dev \
+	libcdio-paranoia-dev \
+	libiso9660-dev \
+	libmms-dev \
 	libzzip-dev \
-	libcurl4-gnutls-dev libyajl-dev libexpat-dev \
-	libasound2-dev libao-dev libjack-jackd2-dev libopenal-dev \
-	libpulse-dev libshout3-dev \
+	libcurl4-gnutls-dev \
+	libyajl-dev \
+	libexpat-dev \
+	libasound2-dev \
+	libao-dev \
+	libjack-jackd2-dev \
+	libopenal-dev \
+	libpulse-dev \
+	libshout3-dev \
 	libsndio-dev \
 	libmpdclient-dev \
 	libnfs-dev \
@@ -53,7 +81,7 @@ ENV HOME /root
 RUN git clone https://github.com/MusicPlayerDaemon/MPD
 
 #Change the working directory to MPD for installation.
-WORKDIR MPD
+WORKDIR /MPD
 
 #Installation of MPD
 RUN meson . output/release --buildtype=debugoptimized -Db_ndebug=true 
@@ -75,20 +103,48 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 	libmpdclient-dev \
 	libfmt-dev \
 	libpcre2-dev \
- 	libmad0-dev libmpg123-dev libid3tag0-dev \
-	libflac-dev libvorbis-dev libopus-dev libogg-dev \
-	libadplug-dev libaudiofile-dev libsndfile1-dev libfaad-dev \
-  	libfluidsynth-dev libgme-dev libmikmod-dev libmodplug-dev \
- 	libmpcdec-dev libwavpack-dev libwildmidi-dev \
-  	libsidplay2-dev libsidutils-dev libresid-builder-dev \
-  	libavcodec-dev libavformat-dev \
-  	libmp3lame-dev libtwolame-dev libshine-dev \
-  	libsamplerate0-dev libsoxr-dev \
-  	libbz2-dev libcdio-paranoia-dev libiso9660-dev libmms-dev \
+ 	libmad0-dev \
+	libmpg123-dev \
+	libid3tag0-dev \
+	libflac-dev \
+	libvorbis-dev \
+	libopus-dev \
+	libogg-dev \
+	libadplug-dev \
+	libaudiofile-dev \
+	libsndfile1-dev \
+	libfaad-dev \
+  	libfluidsynth-dev \
+	libgme-dev \
+	libmikmod-dev \
+	libmodplug-dev \
+ 	libmpcdec-dev \
+	libwavpack-dev \
+	libwildmidi-dev \
+  	libsidplay2-dev \
+	libsidutils-dev \
+	libresid-builder-dev \
+  	libavcodec-dev \
+	libavformat-dev \
+  	libmp3lame-dev \
+	libtwolame-dev \
+	libshine-dev \
+  	libsamplerate0-dev \
+	libsoxr-dev \
+  	libbz2-dev \
+	libcdio-paranoia-dev \
+	libiso9660-dev \
+	libmms-dev \
   	libzzip-dev \
-  	libcurl4-gnutls-dev libyajl-dev libexpat-dev \
-  	libasound2-dev libao-dev libjack-jackd2-dev libopenal-dev \
-  	libpulse-dev libshout3-dev \
+  	libcurl4-gnutls-dev \
+	libyajl-dev \
+	libexpat-dev \
+  	libasound2-dev \
+	libao-dev \
+	libjack-jackd2-dev \
+	libopenal-dev \
+  	libpulse-dev \
+	libshout3-dev \
   	libsndio-dev \
   	libmpdclient-dev \
   	libnfs-dev \

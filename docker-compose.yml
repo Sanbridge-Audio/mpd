@@ -7,17 +7,14 @@ services:
     build:
      context: .
      network: host
-    image: crowsbyte/mpd
+    image: .	
     container_name: mpd-main
     hostname: mpd
-    environment:
-#      - PUID=1000
-#      - PGID=1000
-      - TZ=America/New_York
+    env_file: .env # Add this line to specify the .env file
     volumes:
-#      - /where/your/music/is/located:/var/lib/mpd/music
       - snap-fifo:/tmp
       - playlists:/.mpd/playlists
     ports:
       - 6690:6600
     restart: unless-stopped
+
