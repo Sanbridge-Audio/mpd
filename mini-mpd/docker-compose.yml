@@ -7,7 +7,7 @@ services:
     ports:
       - "6600:6600"
     volumes:
-      - /home/pi/mpd/mini-mpd/mpd.conf:/etc/mpd.conf:ro
+      - ./mpd.conf:/etc/mpd.conf:ro
       - nfs_music:/var/lib/mpd/music             
       - nfs_playlist:/var/lib/mpd/playlists    
     devices:

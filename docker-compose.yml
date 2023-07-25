@@ -1,20 +1,62 @@
-version: "3.7"
+version: "3"
 volumes:
   snap-fifo:
   playlists:
+  nfs_music:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.198,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+      device: ":/music"
+  nfs_playlist:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.198,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+#      device: "/mnt/nfs/playlists"
+      device: ":/playlist"
 services:
   mpd:
-    build:
-     context: .
-     network: host
-    image: .	
+    build: .
     container_name: mpd-main
     hostname: mpd
     env_file: .env # Add this line to specify the .env file
     volumes:
+      - ./mpd.conf:/etc/mpd.conf:ro
+      - nfs_music:/var/lib/mpd/music
+      - nfs_playlist:/.mpd/playlists
       - snap-fifo:/tmp
-      - playlists:/.mpd/playlists
+#      - my_nfs_volume:/.mpd/playlists
     ports:
       - 6690:6600
     restart: unless-stopped
+    devices:
+      - /dev/snd:/dev/snd
+#    user: mpd
+    network_mode: host
+    stdin_open: true   # enable interactive flag
+    tty: true
+    
+#volumes:
+#  snap-fifo:
+#  playlists:
+#  nfs_music:
+#    driver: local
+#    driver_opts:
+#      type: nfs
+#      o: addr=192.168.1.198,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+#      device: ":/music"
+#  nfs_playlist:
+#    driver: local
+#    driver_opts:
+#      type: nfs
+#      o: addr=192.168.1.198,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14,nfsvers=4
+#      device: "/mnt/nfs/playlists"
+#      device: ":/playlist"
 
+#  my_nfs_volume:
+#    driver: local
+#    driver_opts:
+#      type: nfs
+#      o: addr=192.168.1.198,rw
+#      device: ":/playlist"
