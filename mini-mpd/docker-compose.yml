@@ -5,7 +5,7 @@ services:
 #    build: .
     privileged: true
     ports:
-      - "6600:6600"
+      - "6601:6600"
     volumes:
       - ./mpd.conf:/etc/mpd.conf:ro
       - nfs_music:/var/lib/mpd/music             
