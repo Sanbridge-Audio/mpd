@@ -14,7 +14,7 @@ services:
       - /dev/snd:/dev/snd
     restart: always
     user: mpd
-    network_mode: host
+#    network_mode: host
     stdin_open: true   # enable interactive flag
     tty: true
 volumes:
