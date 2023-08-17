@@ -13,7 +13,7 @@ services:
     devices:
       - /dev/snd:/dev/snd
     restart: always
-    user: mpd
+#    user: mpd
 #    network_mode: host
     stdin_open: true   # enable interactive flag
     tty: true
