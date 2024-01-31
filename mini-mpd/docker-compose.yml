@@ -1,15 +1,17 @@
-version: "3.9"
+#version: "3.9"
 services:
   mpd:
 #    image: mini-mpd                          
     build: .
     privileged: true
     ports:
-      - "6601:6600"
+      - "6600:6600"
+      - "8000:8000"
     volumes:
+      - mpd_config:/var/lib/mpd/config
       - ./mpd.conf:/etc/mpd.conf:ro
-      - nfs_music:/var/lib/mpd/music             
-      - nfs_playlist:/var/lib/mpd/playlists    
+      - nfs_music:/var/lib/mpd/music
+      - nfs_playlist:/var/lib/mpd/playlist
     devices:
       - /dev/snd:/dev/snd
     restart: always
@@ -18,6 +20,7 @@ services:
     stdin_open: true   # enable interactive flag
     tty: true
 volumes:
+  mpd_config:
   nfs_music:
     driver: local
     driver_opts:

@@ -3,7 +3,7 @@ FROM debian:stable-slim
 RUN apt-get update && \
     apt-get install -y \
     --no-install-recommends \
-    mpd xz-utils pulseaudio pulseaudio-utils && \
+    mpd xz-utils alsa-utils pipewire wget curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -19,6 +19,12 @@ ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLA
 RUN tar -C / -Jxpf /tmp/s6-overlay-${ARCH}.tar.xz
 
 WORKDIR /
+
+RUN mkdir -p /var/lib/mpd/config
+
+RUN touch /var/lib/mpd/config/pid /var/lib/mpd/config/state /var/lib/mpd/config/sticker.sql
+
+RUN chmod 777 /var/lib/mpd/config/pid /var/lib/mpd/config/state /var/lib/mpd/config/sticker.sql
 
 EXPOSE 6600
 
