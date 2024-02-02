@@ -10,8 +10,8 @@ services:
     volumes:
       - mpd_config:/var/lib/mpd/config
       - ./mpd.conf:/etc/mpd.conf:ro
-      - nfs_music:/var/lib/mpd/music
-      - nfs_playlist:/var/lib/mpd/playlist
+  #    - nfs_music:/var/lib/mpd/music
+ #     - nfs_playlist:/var/lib/mpd/playlist
     devices:
       - /dev/snd:/dev/snd
     restart: always
@@ -19,6 +19,24 @@ services:
 #    network_mode: host
     stdin_open: true   # enable interactive flag
     tty: true
+
+
+  upmpdcli:
+    image: giof71/upmpdcli:renderer
+    container_name: upmpdcli-renderer
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - FRIENDLY_NAME=upmpd
+    volumes:
+      - ./cache:/cache
+      - ./log:/log
+      - ./config/additional-radio-list.txt:/user/config/additional-radio-list.txt:ro
+    labels:
+      - com.centurylinklabs.watchtower.e
+
+
 volumes:
   mpd_config:
   nfs_music:
