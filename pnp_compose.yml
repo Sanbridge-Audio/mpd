@@ -20,7 +20,7 @@ services:
       - ./log:/log
 #      - /mnt/drive1/music:/uprcl/mediadirs/music1:ro
 #      - /mnt/drive2/music:/uprcl/mediadirs/music2:ro
-      - ./config/uprclconfdir:/uprcl/confdir
+#      - ./config/uprclconfdir:/uprcl/confdir
 #      - ./config/upmpdcli/additional-radio-list.txt:/user/config/additional-radio-list.txt:ro
     labels:
       - com.centurylinklabs.watchtower.enable=false
