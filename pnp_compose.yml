@@ -55,7 +55,7 @@ services:
       - ALSA_OUTPUT_MIXER_TYPE=hardware
       - ALSA_OUTPUT_INTEGER_UPSAMPLING=yes
       - ALSA_OUTPUT_ALLOWED_FORMATS=384000:*:* 352800:*:* *:dsd:*
-    volumes:
-      - ./lastfm.txt:/user/config/lastfm.txt:ro
-      - ./librefm.txt:/user/config/librefm.txt:ro
+#    volumes:
+#      - ./lastfm.txt:/user/config/lastfm.txt:ro
+#      - ./librefm.txt:/user/config/librefm.txt:ro
     restart: unless-stopped
