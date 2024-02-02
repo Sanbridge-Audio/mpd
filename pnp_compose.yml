@@ -25,3 +25,37 @@ services:
     labels:
       - com.centurylinklabs.watchtower.enable=false
     restart: unless-stopped
+
+
+
+  mpd-s6-goldilocks:
+    image: giof71/mpd-alsa:latest
+    container_name: mpd-s6-goldilocks
+    devices:
+      - /dev/snd:/dev/snd
+    ports:
+      - 6600:6600/tcp
+    environment:
+      - USER_MODE=Y
+      - PUID=1000
+      - PGID=1000
+      - AUDIO_GID=29
+      - SOXR_PLUGIN_ENABLE=Y
+      - SOXR_PLUGIN_QUALITY=custom
+      - SOXR_PLUGIN_PRECISION=28
+      - SOXR_PLUGIN_PHASE_RESPONSE=45
+      - SOXR_PLUGIN_PASSBAND_END=95
+      - SOXR_PLUGIN_STOPBAND_BEGIN=105
+      - SOXR_PLUGIN_ATTENUATION=4
+      - ALSA_OUTPUT_CREATE=yes
+      - ALSA_OUTPUT_NAME=aune-s6
+      - ALSA_OUTPUT_DEVICE=hw:DAC
+      - ALSA_OUTPUT_MIXER_CONTROL=S6 USB DAC Output
+      - ALSA_OUTPUT_MIXER_DEVICE=hw:DAC
+      - ALSA_OUTPUT_MIXER_TYPE=hardware
+      - ALSA_OUTPUT_INTEGER_UPSAMPLING=yes
+      - ALSA_OUTPUT_ALLOWED_FORMATS=384000:*:* 352800:*:* *:dsd:*
+    volumes:
+      - ./lastfm.txt:/user/config/lastfm.txt:ro
+      - ./librefm.txt:/user/config/librefm.txt:ro
+    restart: unless-stopped
