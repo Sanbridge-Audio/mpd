@@ -3,7 +3,7 @@ FROM debian:stable-slim
 RUN apt-get update && \
     apt-get install -y \
     --no-install-recommends \
-    mpd xz-utils alsa-utils pipewire wget ffmpeg curl && \
+    mpd xz-utils alsa-utils pipewire wget ffmpeg curl flac && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
